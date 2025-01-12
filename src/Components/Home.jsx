@@ -5,6 +5,7 @@ import {
   Box,
   CircularProgress,
   TextField,
+  Button,
 } from "@mui/material";
 import NewsList from "./NewsCard";
 import { CustomDatePicker } from "../Shared/CustomDatePicker";
@@ -13,10 +14,23 @@ import { ArticleList } from "./NewsCard";
 import { articles } from "../utils/constant";
 import { categories } from "../utils/categories";
 import { options } from "../utils/sourceOptions";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { saveSource, saveCategory } from "../redux/slices/customNewsSlice";
+
+import { CustomNews } from "./CustomizeNews";
 
 const Home = () => {
+  const store = useSelector((store) => store.customNewsStore);
+  console.log(store);
+
+  const dispatch = useDispatch();
+  // dispatch(saveCategory("entertainmaint"));
+
   const [source, setSource] = useState("");
   const [dateRange, setDateRange] = useState({ start: null, end: null });
+
+  const [isModelOpen, setIsModelOpen] = useState(false);
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -96,7 +110,7 @@ const Home = () => {
       <Box
         display="flex"
         gap={1}
-        mb={2}
+        mb={1}
         flexWrap="wrap"
         justifyContent="center"
         alignItems="center"
@@ -143,7 +157,14 @@ const Home = () => {
           fullWidth
           sx={{
             flex: 1,
-            "@media (max-width: 100px)": { flex: "1 1 100%" }, // Mobile compatibility
+            height: 36,
+            "& .MuiOutlinedInput-root": {
+              height: 36,
+              "& input": {
+                padding: "8px 14px",
+              },
+            },
+            "@media (max-width: 100px)": { flex: "1 1 100%" },
           }}
         />
 
@@ -167,8 +188,12 @@ const Home = () => {
             }}
           />
         </Box>
+        <Button variant="contained" onClick={() => setIsModelOpen(true)}>
+          Customize News
+        </Button>
       </Box>
 
+      <CustomNews open={isModelOpen} onClose={() => setIsModelOpen(false)} />
       {/* loading */}
       {isLoading ? (
         <Box

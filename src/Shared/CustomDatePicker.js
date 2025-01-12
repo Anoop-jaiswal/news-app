@@ -45,6 +45,14 @@ export const CustomDatePicker = ({
           disabled={isDisabled}
           maxDate={maxDate}
           minDate={minDate}
+          sx={{
+            "& .MuiInputBase-root": {
+              height: 36, // Adjust the height as needed
+            },
+            "& .MuiInputBase-input": {
+              padding: "8px 14px", // Adjust the padding for better spacing
+            },
+          }}
         />
         {error && helperText && (
           <FormHelperText error>{helperText}</FormHelperText>
