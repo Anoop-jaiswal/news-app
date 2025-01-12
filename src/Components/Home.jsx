@@ -7,19 +7,12 @@ import {
   TextField,
 } from "@mui/material";
 import NewsList from "./NewsCard";
-import FlightIcon from "@mui/icons-material/Flight";
-import ComputerIcon from "@mui/icons-material/Computer";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
-import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-import MovieIcon from "@mui/icons-material/Movie";
-import GavelIcon from "@mui/icons-material/Gavel";
-import SchoolIcon from "@mui/icons-material/School";
-import EnergySavingsLeafIcon from "@mui/icons-material/EnergySavingsLeaf";
 import { CustomDatePicker } from "../Shared/CustomDatePicker";
 import CustomDropdown from "../Shared/CustomDropdown";
 import { ArticleList } from "./NewsCard";
 import { articles } from "../utils/constant";
+import { categories } from "../utils/categories";
+import { options } from "../utils/sourceOptions";
 
 const Home = () => {
   const [source, setSource] = useState("");
@@ -36,18 +29,6 @@ const Home = () => {
   const endDate = formatDate(dateRange.end);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const categories = [
-    { name: "Technology", color: "primary", icon: <ComputerIcon /> },
-    { name: "Health", color: "secondary", icon: <LocalHospitalIcon /> },
-    { name: "Sports", color: "success", icon: <SportsSoccerIcon /> },
-    { name: "Business", color: "warning", icon: <BusinessCenterIcon /> },
-    { name: "Entertainment", color: "info", icon: <MovieIcon /> },
-    { name: "Politics", color: "error", icon: <GavelIcon /> },
-    { name: "Education", color: "info", icon: <SchoolIcon /> },
-    { name: "Environment", color: "success", icon: <EnergySavingsLeafIcon /> },
-    { name: "Travel", color: "warning", icon: <FlightIcon /> },
-  ];
 
   const handleCategoryClick = (categoryName) => {
     setSelectedCategory(categoryName);
@@ -96,12 +77,6 @@ const Home = () => {
       setIsLoading(false); // Stop loading
     }
   };
-
-  const options = [
-    { value: "NewsOrg", label: "News Org" },
-    { value: "TheGuardians", label: "The Guardians" },
-    { value: "NewsCred", label: "NewsCred" },
-  ];
 
   useEffect(() => {
     if (source === "NewsCred") {
