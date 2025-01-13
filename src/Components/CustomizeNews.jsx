@@ -4,7 +4,7 @@ import { Box, Button, Snackbar, Alert } from "@mui/material";
 import CustomDropdown from "../Shared/CustomDropdown";
 import { options } from "../utils/sourceOptions";
 import { categories } from "../utils/categories";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   saveAuthor,
   saveCategory,
@@ -13,20 +13,18 @@ import {
 
 export const NewsContent = ({ onClose, showSnackbar }) => {
   const dispatch = useDispatch();
-  const [source, setSource] = useState();
+  const [source, setSource] = useState("");
   const [category, setCategory] = useState();
-  const [author, setAuthor] = useState();
+  const [author, setAuthor] = useState("");
+
+  const authorOptions = useSelector(
+    (store) => store.customNewsStore.authorOptions
+  );
 
   const categoriesList = categories.map((item) => ({
     value: item.name,
     label: item.name,
   }));
-
-  const mockAuthor = [
-    { value: "author1", label: "author1" },
-    { value: "author2", label: "author2" },
-    { value: "author3", label: "author3" },
-  ];
 
   const onClickSave = () => {
     dispatch(saveAuthor(author));
@@ -57,15 +55,17 @@ export const NewsContent = ({ onClose, showSnackbar }) => {
         />
       </Box>
 
-      <Box sx={{ marginBottom: 4 }}>
-        <CustomDropdown
-          label="Author"
-          value={author}
-          onChange={setAuthor}
-          options={mockAuthor}
-          minWidth={400}
-        />
-      </Box>
+      {(source === "NewsOrg" || source === "NewsCred") && (
+        <Box sx={{ marginBottom: 4 }}>
+          <CustomDropdown
+            label="Author"
+            value={author}
+            onChange={setAuthor}
+            options={authorOptions}
+            minWidth={400}
+          />
+        </Box>
+      )}
 
       <Box
         sx={{

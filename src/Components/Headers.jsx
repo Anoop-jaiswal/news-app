@@ -46,7 +46,7 @@ const Header = () => {
             <Typography>Test</Typography>
           </Box> */}
 
-          <IconButton
+          {/* <IconButton
             edge="end"
             color="inherit"
             aria-label="menu"
@@ -54,11 +54,11 @@ const Header = () => {
             onClick={toggleDrawer(true)}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
 
-      <Sidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+      {/* <Sidebar isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} /> */}
     </Box>
   );
 };

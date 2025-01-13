@@ -15,7 +15,12 @@ import { categories } from "../utils/categories";
 import { options } from "../utils/sourceOptions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { saveSource, saveCategory } from "../redux/slices/customNewsSlice";
+import {
+  saveSource,
+  saveCategory,
+  saveAuthorOptions,
+  saveAuthor,
+} from "../redux/slices/customNewsSlice";
 import { useFetchNewsData } from "../hooks/api/useFetchNewsApi";
 
 import { CustomNews } from "./CustomizeNews";
@@ -23,6 +28,7 @@ import { CustomNews } from "./CustomizeNews";
 const Home = () => {
   const dispatch = useDispatch();
   const store = useSelector((store) => store.customNewsStore);
+  const author = useSelector((store) => store.customNewsStore.author);
   const [source, setSource] = useState("");
   const [dateRange, setDateRange] = useState({ start: null, end: null });
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -40,12 +46,25 @@ const Home = () => {
 
   const handleCategoryClick = (categoryName) => {
     setSelectedCategory(categoryName);
+    setSelectedCategory(categoryName);
+    dispatch(saveCategory(categoryName));
   };
+
+  useEffect(() => {
+    dispatch(saveSource(source));
+  }, [source]);
 
   useEffect(() => {
     dispatch(saveCategory("All"));
     dispatch(saveSource("NewsOrg"));
+    dispatch(saveAuthor(""));
   }, [dispatch]);
+
+  const resetCustomize = () => {
+    dispatch(saveCategory("All"));
+    dispatch(saveSource("NewsOrg"));
+    dispatch(saveAuthor(""));
+  };
 
   useEffect(() => {
     if (store) {
@@ -59,6 +78,19 @@ const Home = () => {
     endDate,
     source
   );
+
+  useEffect(() => {
+    dispatch(saveAuthorOptions(datas));
+  }, [datas]);
+
+  const filterByAuthor = (datas, author) => {
+    if (!author?.trim()) {
+      return datas;
+    }
+    return datas.filter((item) => item.author === author);
+  };
+
+  const filteredDataByAuthor = filterByAuthor(datas, author);
 
   return (
     <Box p={3} sx={{ backgroundColor: "grey.100", minHeight: "100vh" }}>
@@ -106,7 +138,10 @@ const Home = () => {
           label="Search by Category or keywords"
           variant="outlined"
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) => {
+            setSelectedCategory(e.target.value);
+            dispatch(saveCategory(e.target.value));
+          }}
           fullWidth
           sx={{
             minWidth: 200,
@@ -145,6 +180,11 @@ const Home = () => {
         <Button variant="contained" onClick={() => setIsModelOpen(true)}>
           Customize News
         </Button>
+        {filteredDataByAuthor?.length === 0 && (
+          <Button onClick={resetCustomize} variant="contained" color="error">
+            Reset
+          </Button>
+        )}
       </Box>
 
       <CustomNews open={isModelOpen} onClose={() => setIsModelOpen(false)} />
@@ -158,16 +198,42 @@ const Home = () => {
         >
           <CircularProgress />
         </Box>
-      ) : datas?.length > 0 ? (
+      ) : filteredDataByAuthor?.length > 0 ? (
         source === "TheGuardians" ? (
-          <ArticleList articles={datas} />
+          <ArticleList articles={filteredDataByAuthor} />
         ) : (
-          <NewsList articles={datas} />
+          <NewsList articles={filteredDataByAuthor} />
         )
       ) : (
-        <Typography textAlign="center" color="textSecondary">
-          No articles found for this category.
-        </Typography>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="50vh"
+          sx={{
+            backgroundColor: "grey.100",
+            borderRadius: "8px",
+            padding: 3,
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <Typography
+            variant="h6"
+            color="textSecondary"
+            textAlign="center"
+            gutterBottom
+            sx={{
+              fontWeight: "500",
+              marginBottom: 2,
+            }}
+          >
+            No articles found for this category.
+          </Typography>
+          <Button onClick={resetCustomize} variant="contained" color="error">
+            Reset
+          </Button>
+        </Box>
       )}
     </Box>
   );
