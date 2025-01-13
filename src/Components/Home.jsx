@@ -11,7 +11,6 @@ import NewsList from "./NewsCard";
 import { CustomDatePicker } from "../Shared/CustomDatePicker";
 import CustomDropdown from "../Shared/CustomDropdown";
 import { ArticleList } from "./NewsCard";
-import { articles } from "../utils/constant";
 import { categories } from "../utils/categories";
 import { options } from "../utils/sourceOptions";
 import { useSelector } from "react-redux";
@@ -23,14 +22,9 @@ import { CustomNews } from "./CustomizeNews";
 
 const Home = () => {
   const dispatch = useDispatch();
-  // dispatch(saveSource("The Guardians"));
-
   const store = useSelector((store) => store.customNewsStore);
-  console.log(store);
-
   const [source, setSource] = useState("");
   const [dateRange, setDateRange] = useState({ start: null, end: null });
-
   const [isModelOpen, setIsModelOpen] = useState(false);
 
   const formatDate = (isoString) => {
@@ -42,15 +36,11 @@ const Home = () => {
   };
 
   const endDate = formatDate(dateRange.end);
-
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleCategoryClick = (categoryName) => {
     setSelectedCategory(categoryName);
-    console.log(`Selected Category: ${categoryName}`);
   };
-
-  //api interaction
 
   useEffect(() => {
     dispatch(saveCategory("All"));
@@ -69,7 +59,6 @@ const Home = () => {
     endDate,
     source
   );
-  //filter row
 
   return (
     <Box p={3} sx={{ backgroundColor: "grey.100", minHeight: "100vh" }}>
@@ -105,7 +94,6 @@ const Home = () => {
         ))}
       </Box>
 
-      {/* filte row */}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -114,7 +102,6 @@ const Home = () => {
         padding={2}
         flexWrap="wrap"
       >
-        {/* Search Bar */}
         <TextField
           label="Search by Category or keywords"
           variant="outlined"
@@ -125,19 +112,18 @@ const Home = () => {
             minWidth: 200,
             flex: 1,
             "& .MuiOutlinedInput-root": {
-              height: 40, // Adjust overall height of the input
-              display: "flex", // Ensures flex alignment for content
-              alignItems: "center", // Aligns content vertically
+              height: 40,
+              display: "flex",
+              alignItems: "center",
               "& input": {
-                padding: "8px 14px", // Adjusts input padding
-                height: "unset", // Removes default height to allow proper centering
+                padding: "8px 14px",
+                height: "unset",
               },
             },
             "@media (max-width: 100px)": { flex: "1 1 100%" },
           }}
         />
 
-        {/* Author Filter */}
         <CustomDropdown
           label="Source"
           value={source}
@@ -145,7 +131,6 @@ const Home = () => {
           options={options}
         />
 
-        {/* Date Range Filter */}
         <Box display="flex" alignItems="center" gap={1}>
           <CustomDatePicker
             value={dateRange.end}
@@ -153,7 +138,7 @@ const Home = () => {
               setDateRange((prev) => ({ ...prev, end: newValue }))
             }
             sx={{
-              "@media (max-width: 600px)": { flex: "1 1 100%" }, // Mobile compatibility
+              "@media (max-width: 600px)": { flex: "1 1 100%" },
             }}
           />
         </Box>
@@ -163,7 +148,7 @@ const Home = () => {
       </Box>
 
       <CustomNews open={isModelOpen} onClose={() => setIsModelOpen(false)} />
-      {/* loading */}
+
       {isLoading ? (
         <Box
           display="flex"

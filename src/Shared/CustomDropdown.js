@@ -13,8 +13,8 @@ const CustomDropdown = ({
       <InputLabel
         id={`${label}-select-label`}
         sx={{
-          top: "-6px", // Adjust vertical alignment
-          fontSize: "0.875rem", // Match font size with Select
+          top: "-6px",
+          fontSize: "0.875rem",
         }}
       >
         {label}
@@ -26,20 +26,20 @@ const CustomDropdown = ({
         label={label}
         sx={{
           "& .MuiInputBase-root": {
-            height: 40, // Adjust the height of the select field
+            height: 40,
           },
           "& .MuiInputBase-input": {
-            padding: "8px 14px", // Adjust padding for the input field
+            padding: "8px 14px",
           },
           "& .MuiSelect-icon": {
-            top: "calc(50% - 12px)", // Vertically center the dropdown icon
+            top: "calc(50% - 12px)",
           },
         }}
         MenuProps={{
           PaperProps: {
             sx: {
-              maxHeight: 200, // Set max height for the dropdown
-              overflowY: "auto", // Enable vertical scrolling
+              maxHeight: 200,
+              overflowY: "auto",
             },
           },
         }}
@@ -49,8 +49,8 @@ const CustomDropdown = ({
             key={option.value}
             value={option.value}
             sx={{
-              fontSize: "0.875rem", // Adjust font size for better readability
-              padding: "6px 14px", // Reduce padding for the dropdown items
+              fontSize: "0.875rem",
+              padding: "6px 14px",
             }}
           >
             {option.label}

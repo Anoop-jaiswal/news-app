@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import SharedModal from "../Shared/CustomModel";
-import { Box, Button, Typography, Snackbar, Alert } from "@mui/material";
+import { Box, Button, Snackbar, Alert } from "@mui/material";
 import CustomDropdown from "../Shared/CustomDropdown";
 import { options } from "../utils/sourceOptions";
 import { categories } from "../utils/categories";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   saveAuthor,
   saveCategory,
@@ -38,7 +38,6 @@ export const NewsContent = ({ onClose, showSnackbar }) => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      {/* Dropdowns */}
       <Box sx={{ marginBottom: 4 }}>
         <CustomDropdown
           label="Source"
@@ -68,7 +67,6 @@ export const NewsContent = ({ onClose, showSnackbar }) => {
         />
       </Box>
 
-      {/* Buttons */}
       <Box
         sx={{
           marginTop: "auto",
@@ -121,26 +119,21 @@ export const CustomNews = ({ open, onClose }) => {
         open={open}
         onClose={onClose}
         title="Customize your News here ! "
-        content={
-          <NewsContent
-            onClose={onClose}
-            showSnackbar={showSnackbar} // Pass the showSnackbar function as a prop
-          />
-        }
+        content={<NewsContent onClose={onClose} showSnackbar={showSnackbar} />}
       />
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }} // Opens from the top-right
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
         <Alert
           onClose={handleCloseSnackbar}
           severity="success"
           sx={{
             width: "100%",
-            backgroundColor: (theme) => theme.palette.success.main, // Contained success color
-            color: (theme) => theme.palette.success.contrastText, // Ensure proper text contrast
+            backgroundColor: (theme) => theme.palette.success.main,
+            color: (theme) => theme.palette.success.contrastText,
           }}
         >
           {snackbar.message}

@@ -20,6 +20,8 @@ export const useFetchNewsData = (selectedCategory, endDate, source) => {
   useEffect(() => {
     if (!selectedCategory || !endDate || !source) return;
 
+    //As this is demo project i am not using api in .env file ,
+    //it should work in prod and dev both without any extra configuration from examiner or user
     const API_KEYS = {
       NewsOrg: "f64c11605bc24fa78ed366b76c10f6f6",
       NewsCred: "f64c11605bc24fa78ed366b76c10f6f6",

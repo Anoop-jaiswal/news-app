@@ -19,12 +19,12 @@ const SharedModal = ({ open, onClose, title, content }) => {
           bgcolor: "white",
           boxShadow: 24,
           p: 3,
-          width: { xs: "90%", sm: 400 }, // 90% width on small devices, 400px on larger devices
+          width: { xs: "90%", sm: 400 },
           borderRadius: 2,
           display: "flex",
           flexDirection: "column",
-          maxHeight: "90vh", // Ensure it doesn’t overflow vertically
-          overflowY: "auto", // Add scrolling if content overflows
+          maxHeight: "90vh",
+          overflowY: "auto",
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>

@@ -7,7 +7,6 @@ import {
   Button,
   Grid,
   Box,
-  CardActions,
 } from "@mui/material";
 
 const NewsCard = ({ news }) => {
@@ -22,14 +21,13 @@ const NewsCard = ({ news }) => {
       sx={{
         width: "100%",
         maxWidth: 300,
-        height: 400, // Set a consistent height for all cards
+        height: 400,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         m: 1,
       }}
     >
-      {/* Image Section */}
       <CardMedia
         component="img"
         height="140"
@@ -37,7 +35,6 @@ const NewsCard = ({ news }) => {
         alt={news.title}
       />
 
-      {/* Content Section */}
       <CardContent
         sx={{
           flexGrow: 1,
@@ -73,7 +70,7 @@ const NewsCard = ({ news }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               maxWidth: "150px",
-              fontWeight: 500, // Slightly bolder than description
+              fontWeight: 500,
             }}
           >
             By {news.author || "Unknown"}
@@ -82,7 +79,7 @@ const NewsCard = ({ news }) => {
             variant="caption"
             color="textSecondary"
             sx={{
-              fontWeight: 500, // Slightly bolder than description
+              fontWeight: 500,
             }}
           >
             {new Date(news.publishedAt).toLocaleDateString()}
@@ -90,7 +87,6 @@ const NewsCard = ({ news }) => {
         </Box>
       </CardContent>
 
-      {/* Action Section */}
       <Box display="flex" justifyContent="center" p={2}>
         <Button
           variant="contained"
@@ -107,7 +103,6 @@ const NewsCard = ({ news }) => {
 };
 
 const NewsList = ({ articles }) => {
-  // Filter out articles without images
   const filteredArticles = articles.filter((article) => article.urlToImage);
 
   return (
@@ -140,14 +135,13 @@ const ArticleCard = ({ article }) => {
       sx={{
         width: "100%",
         maxWidth: 300,
-        height: 250, // Set a consistent height for all cards
+        height: 250,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         m: 1,
       }}
     >
-      {/* Content Section */}
       <CardContent
         sx={{
           flexGrow: 1,
@@ -170,7 +164,7 @@ const ArticleCard = ({ article }) => {
             variant="caption"
             color="textSecondary"
             sx={{
-              fontWeight: 500, // Slightly bolder than description
+              fontWeight: 500,
             }}
           >
             Published:{" "}
@@ -180,7 +174,7 @@ const ArticleCard = ({ article }) => {
             variant="caption"
             color="textSecondary"
             sx={{
-              fontWeight: 500, // Slightly bolder than description
+              fontWeight: 500,
             }}
           >
             Pillar: {article.pillarName}
@@ -188,7 +182,6 @@ const ArticleCard = ({ article }) => {
         </Box>
       </CardContent>
 
-      {/* Action Section */}
       <Box display="flex" justifyContent="center" p={2}>
         <Button
           variant="contained"
