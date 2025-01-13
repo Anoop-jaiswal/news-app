@@ -18,11 +18,13 @@ const SharedModal = ({ open, onClose, title, content }) => {
           transform: "translate(-50%, -50%)",
           bgcolor: "white",
           boxShadow: 24,
-          p: 3, // Increased padding
-          width: 400,
+          p: 3,
+          width: { xs: "90%", sm: 400 }, // 90% width on small devices, 400px on larger devices
           borderRadius: 2,
           display: "flex",
           flexDirection: "column",
+          maxHeight: "90vh", // Ensure it doesn’t overflow vertically
+          overflowY: "auto", // Add scrolling if content overflows
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
@@ -42,7 +44,7 @@ const SharedModal = ({ open, onClose, title, content }) => {
             alignItems: "flex-start",
           }}
         >
-          {content} {/* This renders the passed component as content */}
+          {content}
         </Box>
       </Box>
     </Modal>

@@ -17,15 +17,16 @@ import { options } from "../utils/sourceOptions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { saveSource, saveCategory } from "../redux/slices/customNewsSlice";
+import { useFetchNewsData } from "../hooks/api/useFetchNewsApi";
 
 import { CustomNews } from "./CustomizeNews";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  // dispatch(saveSource("The Guardians"));
+
   const store = useSelector((store) => store.customNewsStore);
   console.log(store);
-
-  const dispatch = useDispatch();
-  // dispatch(saveCategory("entertainmaint"));
 
   const [source, setSource] = useState("");
   const [dateRange, setDateRange] = useState({ start: null, end: null });
@@ -42,7 +43,7 @@ const Home = () => {
 
   const endDate = formatDate(dateRange.end);
 
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleCategoryClick = (categoryName) => {
     setSelectedCategory(categoryName);
@@ -50,59 +51,24 @@ const Home = () => {
   };
 
   //api interaction
-  const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [datas, setDatas] = useState([]);
-  const apiKey = "f64c11605bc24fa78ed366b76c10f6f6";
-  const fetchedNewOrgData = async () => {
-    setIsLoading(true); // Start loading
-    try {
-      const data = await fetch(
-        `https://newsapi.org/v2/everything?q=${selectedCategory}&from=2025-01-09&to=${endDate}&sortBy=popularity&apiKey=${apiKey}`
-      );
-
-      const response = await data.json();
-
-      if (response?.articles) {
-        setDatas(response?.articles);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false); // Stop loading
-    }
-  };
-
-  const guaridianApiKey = "5f10bad3-ff1b-4c2f-904c-7de1b0bd2f93";
-  const fetchedDataFromGuardianAPI = async () => {
-    setIsLoading(true); // Start loading
-    try {
-      const data = await fetch(
-        `https://content.guardianapis.com/search?q=${selectedCategory}&from-date=${endDate}&api-key=test`
-      );
-
-      const response = await data.json();
-
-      if (response.response.results) {
-        setDatas(response.response.results);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false); // Stop loading
-    }
-  };
 
   useEffect(() => {
-    if (source === "NewsCred") {
-    } else if (source === "TheGuardians") {
-      fetchedDataFromGuardianAPI();
-    } else {
-      // fetchedNewOrgData();
-      setSource("NewsOrg");
-      setDatas(articles);
-    }
-  }, [selectedCategory, endDate, source]);
+    dispatch(saveCategory("All"));
+    dispatch(saveSource("NewsOrg"));
+  }, [dispatch]);
 
+  useEffect(() => {
+    if (store) {
+      setSelectedCategory(store.category);
+      setSource(store.source);
+    }
+  }, [store]);
+
+  const { datas, isLoading } = useFetchNewsData(
+    selectedCategory,
+    endDate,
+    source
+  );
   //filter row
 
   return (
@@ -156,12 +122,15 @@ const Home = () => {
           onChange={(e) => setSelectedCategory(e.target.value)}
           fullWidth
           sx={{
+            minWidth: 200,
             flex: 1,
-            height: 36,
             "& .MuiOutlinedInput-root": {
-              height: 36,
+              height: 40, // Adjust overall height of the input
+              display: "flex", // Ensures flex alignment for content
+              alignItems: "center", // Aligns content vertically
               "& input": {
-                padding: "8px 14px",
+                padding: "8px 14px", // Adjusts input padding
+                height: "unset", // Removes default height to allow proper centering
               },
             },
             "@media (max-width: 100px)": { flex: "1 1 100%" },

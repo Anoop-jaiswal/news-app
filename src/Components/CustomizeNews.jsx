@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import SharedModal from "../Shared/CustomModel";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Snackbar, Alert } from "@mui/material";
 import CustomDropdown from "../Shared/CustomDropdown";
 import { options } from "../utils/sourceOptions";
 import { categories } from "../utils/categories";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   saveAuthor,
   saveCategory,
   saveSource,
 } from "../redux/slices/customNewsSlice";
 
-export const NewsContent = ({ onClose }) => {
+export const NewsContent = ({ onClose, showSnackbar }) => {
   const dispatch = useDispatch();
   const [source, setSource] = useState();
   const [category, setCategory] = useState();
   const [author, setAuthor] = useState();
 
-  const categoriesList = categories.map((item) => {
-    return {
-      value: item.name,
-      label: item.name,
-    };
-  });
+  const categoriesList = categories.map((item) => ({
+    value: item.name,
+    label: item.name,
+  }));
 
   const mockAuthor = [
     { value: "author1", label: "author1" },
@@ -35,6 +32,8 @@ export const NewsContent = ({ onClose }) => {
     dispatch(saveAuthor(author));
     dispatch(saveCategory(category));
     dispatch(saveSource(source));
+    showSnackbar("News customization saved successfully!");
+    onClose();
   };
 
   return (
@@ -96,6 +95,7 @@ export const NewsContent = ({ onClose }) => {
           variant="contained"
           color="primary"
           onClick={() => onClickSave()}
+          disabled={!source || !category}
         >
           Save
         </Button>
@@ -105,12 +105,47 @@ export const NewsContent = ({ onClose }) => {
 };
 
 export const CustomNews = ({ open, onClose }) => {
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" });
+
+  const showSnackbar = (message) => {
+    setSnackbar({ open: true, message });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ open: false, message: "" });
+  };
+
   return (
-    <SharedModal
-      open={open}
-      onClose={onClose}
-      title="Customize your News here ! "
-      content={<NewsContent onClose={onClose} />} // Pass the NewsContent component as JSX
-    />
+    <>
+      <SharedModal
+        open={open}
+        onClose={onClose}
+        title="Customize your News here ! "
+        content={
+          <NewsContent
+            onClose={onClose}
+            showSnackbar={showSnackbar} // Pass the showSnackbar function as a prop
+          />
+        }
+      />
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }} // Opens from the top-right
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{
+            width: "100%",
+            backgroundColor: (theme) => theme.palette.success.main, // Contained success color
+            color: (theme) => theme.palette.success.contrastText, // Ensure proper text contrast
+          }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
